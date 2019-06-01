@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from . import db
 
 def create_app(test_config=None):
     # Create and configure the application
@@ -12,6 +13,7 @@ def create_app(test_config=None):
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
+        # silent= True, doesn't raise issue if config.py doesn't exist
         app.config.from_pyfile('config.py', silent=True)
     else:
         # load the test config is passed in
@@ -22,6 +24,9 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    # register close_db and init_db_command commands with the application instance
+    db.init_app(app)
 
     # Simple landing page
 
