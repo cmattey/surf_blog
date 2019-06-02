@@ -21,7 +21,7 @@ def register():
         elif not password:
             error = 'Password is required.'
         elif db.execute(
-            'SELECT id FROM user WHERE username = ?', (username)
+            'SELECT id FROM user WHERE username = ?', (username,) # single-element tuples need a trailing comma, but it's optional for multiple-element tuples.
         ).fetchone() is not None:
             error = 'User {} is already registered, use a different username'.format(username)
 
@@ -46,7 +46,7 @@ def login():
         error = None
 
         user = db.execute(
-            'SELECT * FROM user WHERE username = ?', (username)
+            'SELECT * FROM user WHERE username = ?', (username,)
         ).fetchone()
 
         if user is None:
@@ -67,7 +67,7 @@ def login():
 def logout():
     session.clear()
     flash('Logged out succesfully')
-    return redirect(url_for('/index'))
+    return redirect(url_for('index'))
 
 @bp.before_app_request
 def load_logged_in_user():
@@ -76,8 +76,8 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = get_db.execute(
-            'SELECT * FROM user WHERE username = ?',(user_id)
+        g.user = get_db().execute(
+            'SELECT * FROM user WHERE id = ?',(user_id,)
         ).fetchone()
 
 def login_required(view):
