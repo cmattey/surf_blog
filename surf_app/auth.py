@@ -66,7 +66,7 @@ def login():
 @bp.route('/logout')
 def logout():
     session.clear()
-    flash('Logged out succesfully')
+    # flash('Logged out succesfully')
     return redirect(url_for('index'))
 
 @bp.before_app_request

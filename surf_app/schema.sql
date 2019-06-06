@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS posts;
+DROP TABLE IF EXISTS user_relations;
 
 CREATE TABLE user(
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -15,4 +16,12 @@ CREATE TABLE posts(
   title TEXT NOT NULL,
   body TEXT NOT NULL,
   FOREIGN KEY (author_id) REFERENCES user (id)
+);
+
+CREATE TABLE user_relations(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  follower_id INTEGER NOT NULL,
+  followed_id INTEGER NOT NULL,
+  FOREIGN KEY (follower_id) REFERENCES user(id)
+  FOREIGN KEY (followed_id) REFERENCES user(id)
 );
