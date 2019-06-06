@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, url_for, render_template, g, flash, redirect, request
+    Blueprint, url_for, render_template, g, flash, redirect, request, session
     )
 from werkzeug.exceptions import abort
 
@@ -9,6 +9,14 @@ from surf_app.db import get_db
 bp = Blueprint('blog', __name__)
 
 @bp.route('/')
+def landing_page():
+    if 'user_id' in session:
+        return redirect(url_for('blog.index'))
+    else:
+        return render_template('blog/landing_page.html')
+
+
+@bp.route('/home')
 def index():
     db = get_db()
 
