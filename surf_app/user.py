@@ -4,7 +4,6 @@ from flask import (
 
 from surf_app.auth import login_required
 from surf_app.db import get_db
-import requests
 
 bp = Blueprint('user', __name__, url_prefix='/user')
 
@@ -20,18 +19,7 @@ def user_profile(username):
     ' ORDER BY created DESC',(user['id'],)
     ).fetchall()
 
-    # Making call to our API to access user information
-
-    user_api_url = "http://localhost:5000/api/users/{}".format(user['id'])
-    user_api_response = requests.get(user_api_url)
-    try:
-        user_api_response.raise_for_status()
-    except Exception as exc:
-        print("There was a problem with SURF API:",(exc))
-
-    user_details = user_api_response.json()
-
-    return render_template('user/user_profile.html', user=user_details, posts=user_posts,is_following=is_following(username))
+    return render_template('user/user_profile.html', user=user, posts=user_posts,is_following=is_following(username))
 
 @bp.route('/follow/<username>')
 @login_required
@@ -90,58 +78,3 @@ def is_following(username):
         return True
 
     return False
-
-class User():
-    """
-    Utility class for quick access to user meta information.
-    """
-
-    def __init__(self,id):
-        self.user_id = id
-
-    def get_username(self):
-        db = get_db()
-
-        username = db.execute('SELECT username FROM user WHERE id = (?)',(self.user_id,)).fetchone()
-        return username['username']
-
-    def get_followers(self):
-        db = get_db()
-
-        followers = db.execute('SELECT follower_id FROM user_relations WHERE followed_id=(?)',
-            (self.user_id,)).fetchall()
-
-        return followers
-
-    def get_followed(self):
-        db = get_db()
-
-        followed = db.execute('SELECT followed_id FROM user_relations WHERE follower_id=(?)',
-                (self.user_id,)).fetchall()
-
-        return followed
-
-    def get_posts(self):
-        db = get_db()
-
-        user_posts = db.execute('SELECT id FROM posts WHERE author_id=(?)',
-                (self.user_id,)).fetchall()
-
-        return user_posts
-
-    def to_dict(self):
-
-        data = {
-            'id':self.user_id,
-            'username' : self.get_username(),
-            'post_count' : len(self.get_posts()),
-            'follower_count' : len(self.get_followers()),
-            'followed_count' : len(self.get_followed()),
-            '_links' : {
-                    'self' : url_for('api.get_user',id=self.user_id),
-                    'followers' : url_for('api.get_followers',id=self.user_id),
-                    'followed' : url_for('api.get_followed', id=self.user_id)
-            }
-        }
-
-        return data
