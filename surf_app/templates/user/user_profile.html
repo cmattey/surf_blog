@@ -12,6 +12,7 @@
 {% endblock %}
 
 {% block content %}
+<p>{{ user['follower_count'] }} Followers, {{ user['followed_count'] }} Following</p>
   {% for post in posts %}
     <article class="post">
       <header>
