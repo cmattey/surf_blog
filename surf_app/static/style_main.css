@@ -1,0 +1,12 @@
+body {
+  padding-top: 50px;
+  font-family: 'Raleway', sans-serif;
+}
+
+.input-forms{
+  padding-left: 25px;
+}
+
+.user-name {
+  color: blue;
+}

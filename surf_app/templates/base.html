@@ -1,28 +1,54 @@
 <!DOCTYPE html>
-<title>{% block title %}{% endblock %} - Surf Central</title>
+<html>
+<head>
+  <title>{% block title %}{% endblock %} Surf Central</title>
 
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<nav>
-  <h1><a href="{{ url_for('index') }}">Surf Central</a></h1>
-  <ul>
-    {% if g.user %}
-      <li><a href="{{ url_for('user.user_profile',username=g.user['username'])}}">
-        {{ g.user['username'] }}</a></li>
-      <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-    {% else %}
-      <li><a href="{{ url_for('auth.register') }}">Register</a></li>
-      <li><a href="{{ url_for('auth.login') }}">Login</a></li>
-    {% endif %}
-  </ul>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" type="text/css" href="../../static/style_main.css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+</head>
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{{ url_for('index') }}">Surf Central</a>
+    </div>
+
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+      <li><a href="{{ url_for('blog.index')}}">Explore</a></li>
+      {% if g.user %}
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="#">Beaches</a></li>
+        <li><a class="action" href="{{ url_for('blog.create') }}">
+        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+      {% endif %}
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+          {% if g.user %}
+            <li><a href="{{ url_for('user.user_profile',username=g.user['username'])}}">
+              {{ g.user['username'] }}</a></li>
+            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+          {% else %}
+            <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+            <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+          {% endif %}
+    </ul>
+  </div>
+  </div>
 </nav>
-<section class="content">
-  <header>
-    {% block header %}{% endblock %}
-  </header>
-    {% for message in get_flashed_messages() %}
-      <div class="flash">
-        {{ message }}
-      </div>
-    {% endfor %}
-  {% block content %}{% endblock %}
-</section>
+<!-- <section class="content"> -->
+<body>
+    <div>
+      {% block header %}{% endblock %}
+    </div>
+      {% for message in get_flashed_messages() %}
+        <div class="alert alert-info" role="alert">
+          {{ message }}
+        </div>
+        {% endfor %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>
+<!-- </section> -->
