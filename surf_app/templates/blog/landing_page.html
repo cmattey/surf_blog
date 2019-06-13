@@ -1,25 +1,13 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Welcome to Surf Central!</title>
+{% extends 'base.html' %}
 
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
-
-  </head>
-  <nav>
-    <ul>
-      <h1>Welcome</h1>
-      <p><a href="{{url_for('auth.login')}}">Login</a></p>
-      <p><a href="{{url_for('auth.register')}}">Register</a></p>
-    </ul>
-  </nav>
-  <body>
-    <div class="flex-container">
-      <div class="bg-image">
-        <img src="../../static/images/surf_bg.jpeg" alt="">
+{% block content %}
+    <div class="jumbotron">
+      <div class="container">
+        <h1 class="display-1">Welcome to Surf Central!</h1>
+        <p class="lead">Your one-stop for all things surfing in the Bay, sign-up now and connect with
+        your friends!</p>
+        <p><a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}"
+          role="button">Sign up</a></p>
       </div>
     </div>
-
-  </body>
-</html>
+{% endblock %}
