@@ -5,17 +5,24 @@
 {% endblock %}
 
 {% block content %}
-  <form class="input-forms" method="post">
-    <div class="form-group">
-      <label for="username">Username</label>
+
+<div class="login-center well">
+  <form class="input-forms justify-content-center" method="post">
+
+      <div class="form-group input-group">
+      <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
       <input name="username" class="form-control" id="username"
-      placeholder="Enter your Username" required>
-    </div>
-    <div class="form-group">
-      <label for="password">Password</label>
+      placeholder="Username" required>
+      </div>
+
+      <div class="form-group input-group">
+      <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
       <input type="password" class="form-control" name="password" id="password"
       placeholder="Password" required>
     </div>
+
     <input type="submit" class="btn btn-primary" value="Login">
+
   </form>
+</div>
 {% endblock %}
